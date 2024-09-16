@@ -1,0 +1,9 @@
+*.pyc
+*.sublime*
+.DS_Store
+docs/site
+
+# prevent commiting db changes
+db.sqlite3
+gdi.py
+personal.sh
