@@ -30,9 +30,25 @@ def getUserData(token: str, userId: str) -> dict:
     else:
         return None
     
-    # log user email and phone number
-    print(f"User email: {response.json()['email']}")
-    print(f"User phone number: {response.json()['phone']}")
+    logger.info("Received user with email: " + response.json()['email'])
     return None
 
 
+
+def sendUserDataToSalesforce(user: User, email: str, password: str, phone_number: str, date_of_birth: str) -> None:
+    # Send user data to Salesforce
+    token = authenticate(SALESFORCE_CLIENT_ID, SALESFORCE_CLIENT_SECRET, SALESFORCE_USERNAME, SALESFORCE_PASSWORD)
+    if token:
+        user_data = {
+            'name': user.name,
+            'email': email,
+            'phone_number': phone_number,
+            'date_of_birth': date_of_birth
+        }
+        response = createUser(user_data, token)
+        if response:
+            return True
+        else:
+            return False
+    else:
+        return False

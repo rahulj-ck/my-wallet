@@ -37,3 +37,19 @@ def createUser(name: str, email: str, password: str, phone_number: str, date_of_
         return True
     else:
         return False
+    
+def createBankAccount(user: User, accountNumber: str, balance: float, ) -> None:
+    # Create a bank account for a user in DynamoDB
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.Table('BankAccounts')
+    response = table.put_item(
+        Item={
+            'user': user.id,
+            'account_number': accountNumber,
+            'balance': balance
+        }
+    )
+    if response['ResponseMetadata']['HTTPStatusCode'] == 200:
+        return True
+    else:
+        return False
