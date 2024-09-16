@@ -71,7 +71,7 @@ class DatabaseClient:
         self.conn.close()
         logger.info("Database connection closed.")
 
-class ThirdPartyAPIClient:
+class FreshdeskClient:
     """Handles interactions with third-party services."""
     def __init__(self, api_url: str):
         self.api_url = api_url
@@ -94,7 +94,7 @@ class UserDataSystem:
     """System responsible for managing user data operations."""
     def __init__(self):
         self.db_client = DatabaseClient()
-        self.api_client = ThirdPartyAPIClient(API_ENDPOINT)
+        self.api_client = FreshdeskClient(API_ENDPOINT)
 
     def handle_user_data(self, user_data: UserData):
         try:
@@ -124,6 +124,8 @@ class UserDataSystem:
             "bank_account": user_data.bank_account,
             "status": status
         }
+
+        logger.info(f"Logging user data operation for {user_data.name} and  email {user_data.email} to file.")
         try:
             with open("user_data_log.json", "a") as log_file:
                 log_file.write(json.dumps(log_entry) + "\n")
